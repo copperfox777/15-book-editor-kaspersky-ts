@@ -1,6 +1,8 @@
-import React from 'react';
-import { Form, Input, Button, Space, InputNumber, DatePicker } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import React, {useState} from 'react';
+import { Form, Input, Button, Space, InputNumber, DatePicker, Upload } from 'antd';
+import { MinusCircleOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { uploadHelper, getBase64 } from '../helpers/uploadHelper'
+import { validation } from '../helpers/formValidation';
 
 export interface FieldData {
   name: string|number []
@@ -14,18 +16,38 @@ interface BookFormProps {
   onChange: (fields: FieldData[]) => void;
   fields: FieldData[];
 }
-//TODO: import momentjs type
-function disabledDate(current:any) {
-  // Can not select days before today and today
-  return current && current.isBefore('1800-01-01');
-}
 
+const BookForm: React.FC<BookFormProps> = ({ fields }) => {
+  const [loading, setLoading] = useState(false) 
+  const [imageUrl, setImgUrl] = useState()
 
-const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
+  const handleUpload = (info:any): void => {
+    if (info.file.status === 'uploading') {
+      setLoading( true );
+      return;
+    } else {      
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, (imageUrl: any) =>{
+        console.log(imageUrl)
+        setImgUrl(imageUrl)
+        setLoading(false)
+      });
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
   return (
     <Form
       name="global_state"
       preserve={false}
+      labelCol = {{'span': 6 }}
+      wrapperCol= {{'span': 14}}
       // layout="inline"
       fields={fields}
       onFieldsChange={(changedFields, allFields:any) => {
@@ -36,11 +58,7 @@ const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
       <Form.Item
         name="title"
         label="Title"
-        rules={[
-          {required: true, message: 'Username is required!' },
-          {min:1,message: 'Title is too short'},
-          {max:30, message: 'Title is too long'}
-        ]}
+        rules={validation.title}
       >
         <Input />
       </Form.Item>
@@ -53,7 +71,7 @@ const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
                   {...field}
                   name={[field.name, 'first']}
                   fieldKey={[field.fieldKey, 'first']}
-                  rules={[{ required: true, message: 'Missing first name' }]}
+                  rules={validation.firstName}
                 >
                   <Input placeholder="First Name" />
                 </Form.Item>
@@ -61,7 +79,7 @@ const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
                   {...field}
                   name={[field.name, 'seccond']}
                   fieldKey={[field.fieldKey, 'seccond']}
-                  rules={[{ required: true, message: 'Missing seccond name' }]}
+                  rules={validation.seccondName}
                 >
                   <Input placeholder="Seccond Name" />
                 </Form.Item>
@@ -69,21 +87,18 @@ const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
                   {...field}
                   name={[field.name, 'last']}
                   fieldKey={[field.fieldKey, 'last']}
-                  rules={[{ required: true, message: 'Missing last name' }]}
+                  rules={validation.lastName}
                 >
                   <Input placeholder="Last Name" />
                 </Form.Item>
                 <MinusCircleOutlined onClick={() => {
-                  console.log(field.name);
-                  console.log(fields);
-                  if(fields.length > 1)
-                  remove(field.name);
-                  console.log(fields)}} />
+                    if(fields.length > 1) remove(field.name);}  
+                  } />
               </Space>
             ))}
             <Form.Item>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add field
+                Add author
               </Button>
             </Form.Item>
           </>
@@ -91,52 +106,51 @@ const BookForm: React.FC<BookFormProps> = ({ onChange, fields }) => {
       </Form.List>
 
       <Form.Item name="numberOfPages" label="Number of pages" 
-        rules={[
-          {required: true, message: 'Field is required!' },
-          {min:1, max:10000, type:'number', message: 'Number of pages must be from 1 to 10000'},
-          // {max:30, type:'number', message: 'Number of pages is too big'}
-        ]}
+        rules={validation.numberOfPages}
       >
           <InputNumber />
       </Form.Item> 
 
       <Form.Item name="publishingHouse" label="Publishing house" 
-        rules={[
-          {required: true, message: 'Field is required!' },
-          {max:30, type:'string', message: 'Field is too long'}
-        ]}
+        rules={validation.publishingHouse}
       >
           <Input />
       </Form.Item>
 
       <Form.Item name="publishingYear" label="Publishing year" 
-        rules={[ {min:1800, type:'number', message: 'Year must be more then 1799'}, ]}
+        rules={validation.publishingYear}
       >
-         <Input/>
+         <InputNumber/>
       </Form.Item>
 
-      <Form.Item name="releaseDate" label="Releas date" 
-        rules={[ {min:1800, type:'number', message: 'Year must be more then 1799'}, ]}
-      >
+      <Form.Item name="releaseDate" label="Releas date" >
           <DatePicker 
             format="DD.MM.YYYY"
-            disabledDate={disabledDate}
+            disabledDate={(current)=>current && current.isBefore('1800-01-01')}
           />
       </Form.Item>
 
       <Form.Item name="isbn" label="isbn" 
-        rules={[
-          {required: true, message: 'Field is required!' },
-          {pattern:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/, message: 'Only digits and dashes are allowed. 10 or 13 digits.' }, 
-        ]}
+        rules={validation.isbn}
       >
          <Input/>
       </Form.Item>
-      
-      <Form.Item name="image" label="Image" 
-        rules={[ {min:1800, type:'number', message: 'Year must be more then 1799'}, ]}
+
+      <Form.Item
+        name="upload"
+        label="Upload"
+        valuePropName="fileList"
+        getValueFromEvent={uploadHelper}
       >
-         <Input/>
+        <Upload name="logo" 
+        listType="picture-card"
+        className="avatar-uploader"
+        showUploadList={false}
+        onChange={handleUpload}
+        //action=''
+        >
+          {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        </Upload>
       </Form.Item>
 
       

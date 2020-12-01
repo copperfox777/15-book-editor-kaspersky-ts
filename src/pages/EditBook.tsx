@@ -18,7 +18,6 @@ export const EditBook: React.FC = () => {
           setFields(newFields);
         }}
       />
-      <pre className="language-bash">{JSON.stringify(fields, null, 2)}</pre>
     </>
   );
 };

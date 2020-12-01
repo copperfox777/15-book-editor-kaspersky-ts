@@ -1,5 +1,11 @@
-@import '~antd/dist/antd.css';
-ul li{
+@import "~antd/dist/antd.css";
+ul li {
   display: inline;
 }
-.app {margin:30px;}
+.app {
+  margin: 30px;
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}

@@ -3,20 +3,27 @@ import BookForm, { FieldData } from '../components/BookForm'
 
 
 export const EditBook: React.FC = () => {
-  const [fields, setFields] = useState(
-    [
-      { "touched": true, "validating": false, "errors": [], "name": [ "title" ], "value": "Идиот" },
-      { "touched": true, "validating": false, "errors": [], "name": [ "authors" ], "value": [ { "first": "Фёдор", "seccond": "Михайлович", "last": "Достоевский" } ] }, { "touched": true, "validating": false, "errors": [], "name": [ "authors", 0, "first" ], "value": "Фёдор" }, { "touched": true, "validating": false, "errors": [], "name": [ "authors", 0, "seccond" ], "value": "Михайлович" }, { "touched": true, "validating": false, "errors": [], "name": [ "authors", 0, "last" ], "value": "Достоевский" }
-    ] as FieldData[]); 
+    const initialValues = {
+      title: "Идиот",
+      authors: [{ first: "Фёдор", last: "Достоевский" }],
+      isbn: "111-1111-111",
+      numberOfPages: 4095,
+      publishingHouse: "AST",
+      publishingYear: 2000,
+      upload: undefined,
+    };
 
   return (
     <>
       <BookForm
-        fields={fields}
-        onChange={newFields => {
-          console.log(newFields)
-          setFields(newFields);
-        }}
+        initialValues = {initialValues}
+        // fields={fields}
+        // onChange={
+        //   newFields => {
+        //     console.log(newFields)
+        //     setFields(newFields);
+        //   }
+        // }
       />
     </>
   );

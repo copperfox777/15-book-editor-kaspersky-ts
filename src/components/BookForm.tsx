@@ -12,14 +12,28 @@ export interface FieldData {
   errors?: string[];
 }
 
-interface BookFormProps {
-  onChange: (fields: FieldData[]) => void;
-  fields: FieldData[];
+type initialValuesType = {
+  title: string;
+  authors: {
+      first: string;
+      last: string;
+  }[];
+  isbn: string;
+  numberOfPages: number;
+  publishingHouse: string;
+  publishingYear: number;
+  upload: undefined;
 }
 
-const BookForm: React.FC<BookFormProps> = ({ fields }) => {
+interface BookFormProps {
+  onChange?: (fields: FieldData[]) => void;
+  fields?: FieldData[];
+  initialValues:initialValuesType
+}
+
+const BookForm: React.FC<BookFormProps> = ({ initialValues,fields }) => {
   const [loading, setLoading] = useState(false) 
-  const [imageUrl, setImgUrl] = useState()
+  const [imageUrl, setImgUrl] = useState<string | null>('')
 
   const handleUpload = (info:any): void => {
     if (info.file.status === 'uploading') {
@@ -27,13 +41,22 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
       return;
     } else {      
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl: any) =>{
+      getBase64(info.file.originFileObj, (imageUrl: 'string') =>{
         console.log(imageUrl)
         setImgUrl(imageUrl)
         setLoading(false)
       });
     }
   };
+ 
+  const handleSubmit = (values:any):void=> {
+    debugger
+    let books: string[] = JSON.parse(localStorage.getItem("books") || '[]');
+    let toLocalStorage = JSON.stringify({...values,upload:imageUrl})
+    books.push(toLocalStorage)
+    localStorage.setItem("books", JSON.stringify(books));
+    console.log(values)
+  }
 
   const uploadButton = (
     <div>
@@ -44,16 +67,20 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
 
   return (
     <Form
+      initialValues={initialValues}
       name="global_state"
       preserve={false}
       labelCol = {{'span': 6 }}
       wrapperCol= {{'span': 14}}
-      // layout="inline"
-      fields={fields}
-      onFieldsChange={(changedFields, allFields:any) => {
-        console.log(allFields)
-        // onChange(allFields);
+      // fields={fields}
+      // onFieldsChange={(changedFields, allFields:any) => {
+      //   console.log(allFields)
+      //   // onChange(allFields);
+      // }}
+      onValuesChange={(changedValues, allValues:any) => {
+        console.log(allValues)
       }}
+      onFinish={handleSubmit}
     >
       <Form.Item
         name="title"
@@ -62,6 +89,7 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
       >
         <Input />
       </Form.Item>
+      
       <Form.List name="authors">
         {(fields, { add, remove }) => (
           <>
@@ -72,6 +100,7 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
                   name={[field.name, 'first']}
                   fieldKey={[field.fieldKey, 'first']}
                   rules={validation.firstName}
+                  required={true}
                 >
                   <Input placeholder="First Name" />
                 </Form.Item>
@@ -80,16 +109,9 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
                   name={[field.name, 'seccond']}
                   fieldKey={[field.fieldKey, 'seccond']}
                   rules={validation.seccondName}
+                  required={true}
                 >
                   <Input placeholder="Seccond Name" />
-                </Form.Item>
-                <Form.Item
-                  {...field}
-                  name={[field.name, 'last']}
-                  fieldKey={[field.fieldKey, 'last']}
-                  rules={validation.lastName}
-                >
-                  <Input placeholder="Last Name" />
                 </Form.Item>
                 <MinusCircleOutlined onClick={() => {
                     if(fields.length > 1) remove(field.name);}  
@@ -155,7 +177,7 @@ const BookForm: React.FC<BookFormProps> = ({ fields }) => {
 
       
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button disabled={loading} type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>

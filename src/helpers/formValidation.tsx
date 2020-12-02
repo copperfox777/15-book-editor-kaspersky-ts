@@ -8,6 +8,8 @@ export const validation: RuleObject = {
     {min:1,message: 'Title is too short'},
     {max:30, message: 'Title is too long'}
   ],
+  credentials:[{ required: true, message: 'Field is required!' },
+  {max:20, type:'string', message: 'Field is too long'}],
   firstName: [
     { required: true, message: 'Field is required!' },
     {max:20, type:'string', message: 'Field is too long'}
@@ -32,7 +34,6 @@ export const validation: RuleObject = {
     {min:1800, type:'number', message: 'Year must be more then 1799'}, 
   ],
   isbn:[
-    {required: true, message: 'Field is required!' },
     {pattern:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/, message: 'Only digits and dashes are allowed. 10 or 13 digits.' }, 
   ],
 

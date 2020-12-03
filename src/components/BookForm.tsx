@@ -66,8 +66,8 @@ const BookForm: React.FC<BookFormProps> = ({ initialValues = emptyBook, id }) =>
     localStorage.setItem("bookIds", JSON.stringify(bookIds));
     const hide = message.info('Сохранено');
     setLoading( true );
-    setTimeout(hide, 2000);
-    setTimeout(()=>history.push('/'),2000)
+    setTimeout(hide, 500);
+    setTimeout(()=>history.push('/'),500)
   }
 
   const handleDelete = ()=>{

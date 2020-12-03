@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { mockBooks } from './helpers/mockBooks'
-localStorage.setItem('',mockBooks)
+import { mockBooks, mockIds } from './helpers/mockBooks'
+
+
+if (!localStorage.getItem("books")) {
+  localStorage.setItem('books',mockBooks)
+  localStorage.setItem('bookIds',mockIds)
+}
 
 ReactDOM.render( <App /> ,document.getElementById('root')
 );

@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.939d797e.chunk.css",
-    "main.js": "/static/js/main.c49ecd25.chunk.js",
-    "main.js.map": "/static/js/main.c49ecd25.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e7ddc1fc.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e7ddc1fc.js.map",
-    "static/css/2.f3081fb4.chunk.css": "/static/css/2.f3081fb4.chunk.css",
-    "static/js/2.a9e740d3.chunk.js": "/static/js/2.a9e740d3.chunk.js",
-    "static/js/2.a9e740d3.chunk.js.map": "/static/js/2.a9e740d3.chunk.js.map",
-    "static/js/3.5809af5c.chunk.js": "/static/js/3.5809af5c.chunk.js",
-    "static/js/3.5809af5c.chunk.js.map": "/static/js/3.5809af5c.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.f3081fb4.chunk.css.map": "/static/css/2.f3081fb4.chunk.css.map",
-    "static/css/main.939d797e.chunk.css.map": "/static/css/main.939d797e.chunk.css.map",
-    "static/js/2.a9e740d3.chunk.js.LICENSE.txt": "/static/js/2.a9e740d3.chunk.js.LICENSE.txt"
+    "main.css": "/15-book-editor-kaspersky-ts/static/css/main.939d797e.chunk.css",
+    "main.js": "/15-book-editor-kaspersky-ts/static/js/main.c49ecd25.chunk.js",
+    "main.js.map": "/15-book-editor-kaspersky-ts/static/js/main.c49ecd25.chunk.js.map",
+    "runtime-main.js": "/15-book-editor-kaspersky-ts/static/js/runtime-main.b9cc3521.js",
+    "runtime-main.js.map": "/15-book-editor-kaspersky-ts/static/js/runtime-main.b9cc3521.js.map",
+    "static/css/2.f3081fb4.chunk.css": "/15-book-editor-kaspersky-ts/static/css/2.f3081fb4.chunk.css",
+    "static/js/2.613df9ff.chunk.js": "/15-book-editor-kaspersky-ts/static/js/2.613df9ff.chunk.js",
+    "static/js/2.613df9ff.chunk.js.map": "/15-book-editor-kaspersky-ts/static/js/2.613df9ff.chunk.js.map",
+    "static/js/3.5809af5c.chunk.js": "/15-book-editor-kaspersky-ts/static/js/3.5809af5c.chunk.js",
+    "static/js/3.5809af5c.chunk.js.map": "/15-book-editor-kaspersky-ts/static/js/3.5809af5c.chunk.js.map",
+    "index.html": "/15-book-editor-kaspersky-ts/index.html",
+    "static/css/2.f3081fb4.chunk.css.map": "/15-book-editor-kaspersky-ts/static/css/2.f3081fb4.chunk.css.map",
+    "static/css/main.939d797e.chunk.css.map": "/15-book-editor-kaspersky-ts/static/css/main.939d797e.chunk.css.map",
+    "static/js/2.613df9ff.chunk.js.LICENSE.txt": "/15-book-editor-kaspersky-ts/static/js/2.613df9ff.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e7ddc1fc.js",
+    "static/js/runtime-main.b9cc3521.js",
     "static/css/2.f3081fb4.chunk.css",
-    "static/js/2.a9e740d3.chunk.js",
+    "static/js/2.613df9ff.chunk.js",
     "static/css/main.939d797e.chunk.css",
     "static/js/main.c49ecd25.chunk.js"
   ]

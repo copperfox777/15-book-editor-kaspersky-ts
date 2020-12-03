@@ -7,7 +7,7 @@ import { Home } from "./pages/Home";
 
 export default function App() {
   return (
-    <Router >
+    <Router basename="/book-editor/">
       <div className="app">
         <nav className="nav">
             <Space size="large" >

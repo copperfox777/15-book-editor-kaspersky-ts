@@ -4,8 +4,25 @@ ul li {
 }
 .app {
   margin: 30px;
+  padding-bottom: 30px;
 }
 .avatar-uploader > .ant-upload {
   width: 128px;
   height: 128px;
+}
+.home__boolkist{
+  display: flex;
+
+}
+.home__boolkist > div {
+  margin:10px;
+}
+.home__bookimg {
+  border:1px solid #f0f0f0;
+}
+.nav {
+  padding-bottom:10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  
 }

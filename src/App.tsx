@@ -7,7 +7,7 @@ import { Home } from "./pages/Home";
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="https://copperfox777.github.io/15-book-editor-kaspersky-ts/">
       <div className="app">
         <nav className="nav">
             <Space size="large" >

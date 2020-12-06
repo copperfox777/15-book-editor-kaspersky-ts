@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { emptyBook, validation, formatValues } from '../helpers/formValidation';
 import { uploadHelper, getBase64 } from '../helpers/uploadHelper';
 import { uniqId} from '../helpers/uniqId';
+import { useStorage } from '../helpers/useStorage';
 
 export type BookType = {
   title: string;
@@ -35,8 +36,7 @@ const BookForm: React.FC<BookFormProps> = ({ initialValues = emptyBook, id }) =>
   const [loading, setLoading] = useState(false) 
   const [image, setImg] = useState<string>('')
   const history = useHistory()
-  const books = JSON.parse(localStorage.getItem("books") || '{}');
-  const bookIds = JSON.parse(localStorage.getItem("bookIds") || '[]');
+  const [books,bookIds] = useStorage();
 
   const handleUpload = (info:any): void => {
     if (info.file.status === 'uploading') {

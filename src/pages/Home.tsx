@@ -1,75 +1,25 @@
 import React, { useState } from 'react';
-import { Card, Avatar,Select, Space } from 'antd';
-import { EditOutlined, ReadOutlined, AntDesignOutlined  } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
 
+
+import { SortFilters } from '../components/SortFilters' 
 import { sortBooks } from '../helpers/sortBooks' 
-
-const { Option } = Select;
+import { useStorage } from '../helpers/useStorage'
+import { BookCard } from '../components/BookCard';
 
 
 export const Home: React.FC = () =>{
-  const books = JSON.parse(localStorage.getItem("books") || '{}');
-  const bookIds: string[] = JSON.parse(localStorage.getItem("bookIds") || '[]');
-  const sortParams = JSON.parse(localStorage.getItem("sortParams") || '{"by":"title","order":"asc"}')
-  const history = useHistory()
-  const [sortBy, setSortBy] = useState(sortParams.by)
-  const [sortOrder, setSortOrder] = useState(sortParams.order)
+  const [books,bookIds,sortParams] = useStorage()
+  const [sort, handleSort] = useState(0)
+  console.log(sort)
    
-  const sortedIds = [...bookIds].sort((a,b)=> sortBooks(a,b,sortBy,sortOrder,books))
-
-  function handleChange(value:string,name:string) {
-    console.log(`selected ${value}`);
-    if(name === 'sortBy') {
-      setSortBy(value)
-      localStorage.setItem("sortParams", JSON.stringify({by:value, order: sortOrder}))
-    }
-    if(name === 'order') { 
-      setSortOrder(value)
-      localStorage.setItem("sortParams", JSON.stringify({by:sortBy, order: value}))
-    }
-  }
+  const sortedIds = [...bookIds].sort((a,b)=> sortBooks(a,b,sortParams.by,sortParams.order,books))
 
   return (
     <div>
-      <Space>
-        <span>Сортировка по:</span>
-        <Select defaultValue={sortBy} style={{ width: 160 }}onChange={(value)=>handleChange(value,'sortBy')}>
-          <Option value="title">Заголовок</Option>
-          <Option value="publishingYear">Год публикации</Option>
-        </Select>
-        <span>Напраление:</span>
-        <Select defaultValue={sortOrder} style={{ width: 120 }} onChange={(value)=>handleChange(value,'order')}>
-            <Option value="asc">По возрастанию</Option>
-            <Option value="desc">По убыванию</Option>
-        </Select>
-      </Space>    
+      <SortFilters handleSort={handleSort}/>
+      
       <div className="home__boolkist">
-        {sortedIds.length > 0 && sortedIds.map((id:string,index)=>{
-          return( 
-            <Card
-              key={id}
-              // hoverable
-              style={{ width: 300 }}
-              cover={<Avatar className="home__bookimg" src={books[id].image} shape="square" size={300} icon={<AntDesignOutlined/>}/>}
-              actions={[
-                <ReadOutlined key="read" alt="Read book" />,
-                <EditOutlined key="edit" alt="Edit book" onClick={()=>{history.push(`/editbook/${id}`)}} />
-              ]}
-            >
-            <Card.Meta 
-            title={`${books[id].title}`}
-            description={
-              <>
-                <p>{`${books[id].authors[0].first} ${books[id].authors[0].last}`}</p>
-                <p> {`Издательство: ${books[id].publishingHouse}`}</p>
-                <p> {`Год публикации: ${books[id].publishingYear || "Не указан"}`}</p>
-              </>
-            } 
-            />
-          </Card>
-          )
-        })}
+        {sortedIds.length > 0 && sortedIds.map((id:string,index)=><BookCard key={id} book={books[id]} />)}
         {sortedIds.length ? null : <p>Книг пока нет, но вы можете добавить нажав соответствующую кнопку</p> }
       </div>
     </div>
